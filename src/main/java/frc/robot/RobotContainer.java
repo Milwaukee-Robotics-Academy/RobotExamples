@@ -24,6 +24,10 @@ public RobotContainer() {
   
   configureButtonBindings();
   
+  /**
+   * Setting then default command for the Drive subsystem. Unless no other commands are using the {@link Drive} class
+   * (such as {@Link AlignToGoal}) the SplitArcadeDrive command will run. This lets the driver drive
+   */
     m_Drive.setDefaultCommand(new SplitArcadeDrive(() -> driverController.getTriggerAxis(GenericHID.Hand.kLeft),
          () -> driverController.getTriggerAxis(GenericHID.Hand.kRight), () -> driverController.getX(GenericHID.Hand.kLeft), m_Drive));
 
@@ -34,7 +38,12 @@ public RobotContainer() {
  */
 public void configureButtonBindings() {
 
-
+/**
+ * Setting up the Driver Controller "A" button to control using the vision "AlignToGoal". This means
+ * as long as you hold the A button down, the robot will look for a target, and if there is one locked in, it will 
+ * drive towards it. Turning so that it is centered on the target, and moving forward until it is close enough (as 
+ * determined by how far away we want to be, set in Constants... kGoalRangeInches )
+ */
   final JoystickButton driverA = new JoystickButton(driverController, XboxController.Button.kA.value);
   driverA.whenHeld(new AlignToGoal(m_Camera,m_Drive),true);
 
