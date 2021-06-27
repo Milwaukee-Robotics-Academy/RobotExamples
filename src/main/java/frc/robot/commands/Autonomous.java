@@ -18,20 +18,5 @@ public class Autonomous extends SequentialCommandGroup {
      * Create a new autonomous command.
      */
     public Autonomous(Drive drive) {
-    //addCommands(
-        //new PrepareToPickup(claw, wrist, elevator),
-        //new Pickup(claw, wrist, elevator),
-        //new SetDistanceToBox(0.10, drive),
-      //  new DriveStraight(4, drive).withTimeout(5),
-       // new DriveStraight(-4, drive).withTimeout(5)
-         // Use encoders if ultrasonic is broken
-//        new Place(claw, wrist, elevator),
-//        new SetDistanceToBox(0.60, drive),
-        // new DriveStraight(-2), // Use Encoders if ultrasonic is broken
-       // parallel(
-         //   new SetWristSetpoint(-45, wrist),
-          //  new CloseClaw(claw)
-       // )
-//);
   }
 }

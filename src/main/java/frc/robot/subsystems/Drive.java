@@ -47,8 +47,8 @@ public class Drive extends SubsystemBase implements Loggable {
   
   }
 
-  public void drive(double rightThrottle, double leftThrottle, double rotation) {
-    m_robotDrive.curvatureDrive(this.deadband(rightThrottle - leftThrottle), this.deadband(-rotation), true);
+  public void drive(double throttle, double rotation) {
+    m_robotDrive.curvatureDrive(this.deadband(throttle), this.deadband(-rotation), true);
    //  m_robotDrive.arcadeDrive(this.deadband(rightThrottle - leftThrottle), this.deadband(-rotation));
     }
     public double deadband(double value){
@@ -62,6 +62,10 @@ public class Drive extends SubsystemBase implements Loggable {
 
       //Deadband//
       return 0;
+    }
+
+  public void drive(double rightThrottle, double leftThrottle, double rotation) {
+      drive(rightThrottle-leftThrottle, rotation);
     }
 
   public void driveTank(double d, double e){

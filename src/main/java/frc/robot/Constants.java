@@ -27,6 +27,18 @@ public final class Constants {
 
         public static final boolean kIsStudentDriver = true;
     }
+    public static final class CameraConstants {
+    // Constants such as camera and target height stored. Change per robot and goal!
+    // How high is the camera installed
+    public static double kCameraHeightInches = 24;
+    // how high is the target
+    public static double kTargetHeightInches = 60;
+    //angle the camera is installed
+    public static double KCameraPitchDegrees = 0;
+    // How far from the target we want to be
+    public static double kGoalRangeInches = 36;
+
+    }
     public static final class IntakeConstants {
         public static final int kIntakeMotor = 6; //pwm
         public static final int kIntakeSolenoid1 = 3;
