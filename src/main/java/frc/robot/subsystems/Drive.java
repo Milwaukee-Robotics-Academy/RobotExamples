@@ -7,85 +7,73 @@
 
 package frc.robot.subsystems;
 
-import com.ctre.phoenix.motorcontrol.InvertType;
-import com.ctre.phoenix.motorcontrol.TalonFXInvertType;
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
-import com.kauailabs.navx.frc.AHRS;
-
-import edu.wpi.first.wpilibj.SPI;
+import edu.wpi.first.wpilibj.AnalogGyro;
+import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.Jaguar;
+import edu.wpi.first.wpilibj.SpeedControllerGroup;
+import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.interfaces.Gyro;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.DriveConstants;
 import io.github.oblarg.oblog.Loggable;
-import io.github.oblarg.oblog.annotations.Config;
 import io.github.oblarg.oblog.annotations.Log;
 
 public class Drive extends SubsystemBase implements Loggable {
-  private final WPI_TalonFX m_LeftMotor = new WPI_TalonFX(DriveConstants.kLeftMotorFrontPort);
-  private final WPI_TalonFX m_LeftFollowerMotor = new WPI_TalonFX(DriveConstants.kLeftMotorRearPort);
-  private final WPI_TalonFX m_RightMotor = new WPI_TalonFX(DriveConstants.kRightMotorFrontPort);
-  private final WPI_TalonFX m_RightFollowerMotor = new WPI_TalonFX(DriveConstants.kRightMotorRearPort);
+  private final Victor m_LeftMotor = new Victor(DriveConstants.kLeftMotorFrontPort);
+  private final Victor m_LeftFollowerMotor = new Victor(DriveConstants.kLeftMotorRearPort);
+  private final SpeedControllerGroup m_LeftMotors = new SpeedControllerGroup(m_LeftMotor,m_LeftFollowerMotor);
+  @Log.Encoder
+  private final Encoder m_LeftEncoder = new Encoder(DriveConstants.kLeftEncoderPort1, DriveConstants.kLeftEncoderPort2);
+  private final Jaguar m_RightMotor = new Jaguar(DriveConstants.kRightMotorFrontPort);
+  private final Jaguar m_RightFollowerMotor = new Jaguar(DriveConstants.kRightMotorRearPort);
+  private final SpeedControllerGroup m_RightMotors = new SpeedControllerGroup(m_RightMotor,m_RightFollowerMotor);
+  @Log.Encoder
+  private final Encoder m_RightEncoder = new Encoder(DriveConstants.kRightEncoderPort1, DriveConstants.kRightEncoderPort2);
+
   @Log.Gyro
-  private final AHRS m_gyroscope = new AHRS(SPI.Port.kMXP);
+  private final Gyro gyro = new AnalogGyro(DriveConstants.kGyroPort);
+ // private final AHRS m_gyroscope = new AHRS(SPI.Port.kMXP);
 
   @Log.DifferentialDrive
-  private final DifferentialDrive m_robotDrive = new DifferentialDrive(m_LeftMotor, m_RightMotor);
+  private final DifferentialDrive m_robotDrive = new DifferentialDrive(m_LeftMotors, m_RightMotors);
 
  /**
    * Creates a new drive.
    */
   public Drive() {
 
-    m_RightMotor.configFactoryDefault();
-    m_RightFollowerMotor.configFactoryDefault();
-    m_LeftMotor.configFactoryDefault();
-    m_LeftFollowerMotor.configFactoryDefault();
-    
-    m_LeftFollowerMotor.follow(m_LeftMotor);
-    m_RightFollowerMotor.follow(m_RightMotor);
-
-    m_RightMotor.setInverted(TalonFXInvertType.CounterClockwise);
-    m_LeftMotor.setInverted(TalonFXInvertType.Clockwise);
-
-    m_RightFollowerMotor.setInverted(InvertType.FollowMaster);
-    m_LeftFollowerMotor.setInverted(InvertType.FollowMaster);
-
     m_robotDrive.setRightSideInverted(false);
   
   }
 
   public void drive(double rightThrottle, double leftThrottle, double rotation) {
-     m_robotDrive.arcadeDrive(this.deadband(rightThrottle - leftThrottle), this.deadband(-rotation));
+    m_robotDrive.curvatureDrive(this.deadband(rightThrottle - leftThrottle), this.deadband(-rotation), true);
+   //  m_robotDrive.arcadeDrive(this.deadband(rightThrottle - leftThrottle), this.deadband(-rotation));
     }
     public double deadband(double value){
       //Upper Deadband//
       if (value >= +0.2)
-        return value; 
+        return ((DriveConstants.kIsStudentDriver) ? value/2 : value);
 
       //Lower Deadband//
       if (value <= -0.2)
-        return value;
+      return ((DriveConstants.kIsStudentDriver) ? value/2 : value);
 
-      //Outside Deadband//
+      //Deadband//
       return 0;
     }
 
   public void driveTank(double d, double e){
-    m_robotDrive.tankDrive(d, e);
+    m_robotDrive.tankDrive(deadband(d), deadband(e));
   }
 
   public void vision() {
 
   }
 
-  @Config
-  public void tank(double left, double right){
-    m_LeftMotor.set(left);
-    m_RightMotor.set(right);
-  }
-  
   public void stopDrive(){
-    this.tank(0, 0);
+    m_robotDrive.stopMotor();
   }
 
   @Override
@@ -94,11 +82,11 @@ public class Drive extends SubsystemBase implements Loggable {
   }
 @Log(name = "Left Encoder")
   public Double getLeftEncoderPosition(){
-    return m_LeftMotor.getSelectedSensorPosition();
+    return m_LeftEncoder.getDistance();
   }
 
   @Log(name = "Right Encoder")
   public Double getRightEncoderPosition(){
-    return m_RightMotor.getSelectedSensorPosition();
+    return m_RightEncoder.getDistance();
   }
 }
