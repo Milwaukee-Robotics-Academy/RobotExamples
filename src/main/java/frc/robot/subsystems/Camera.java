@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj.util.Units;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.CameraConstants;
 import io.github.oblarg.oblog.Loggable;
+import io.github.oblarg.oblog.annotations.Log;
 
 public class Camera extends SubsystemBase implements Loggable {
 
@@ -48,6 +49,7 @@ public class Camera extends SubsystemBase implements Loggable {
     m_CameraPitchRadians, targetPitchRadians);
 
   }
+  @Log.BooleanBox
   public boolean hasTargets(){
     return m_Camera.hasTargets();
   }

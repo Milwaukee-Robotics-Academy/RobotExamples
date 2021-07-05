@@ -14,8 +14,6 @@ import frc.robot.subsystems.Drive;
 public class RobotContainer {
   private final Drive m_Drive = new Drive();
   private final Camera m_Camera = new Camera();
-
- // private final PowerDistributionPanel pdp = new PowerDistributionPanel();
   private final XboxController driverController = new XboxController(0);
   private final CommandBase m_autonomousCommand = new Autonomous(m_Drive).withTimeout(5);
 
@@ -48,8 +46,6 @@ public void configureButtonBindings() {
   driverA.whenHeld(new AlignToGoal(m_Camera,m_Drive),true);
 
 }
-
-public void shuffleBoard(){}
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
