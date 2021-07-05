@@ -43,7 +43,7 @@ public class Drive extends SubsystemBase implements Loggable {
    */
   public Drive() {
 
-    m_robotDrive.setRightSideInverted(false);
+    m_robotDrive.setRightSideInverted(true);
 
   }
 
@@ -94,7 +94,7 @@ public class Drive extends SubsystemBase implements Loggable {
    * @param rotation
    */
   public void drive(double rightThrottle, double leftThrottle, double rotation) {
-    drive(rightThrottle - leftThrottle, rotation);
+    drive(-(rightThrottle - leftThrottle), rotation);
   }
 
   public void driveTank(double d, double e) {

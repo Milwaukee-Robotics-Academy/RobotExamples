@@ -13,10 +13,10 @@ package frc.robot;
 public final class Constants {
     public static final class DriveConstants {
         //Drive Controllers
-        public static final int kLeftMotorFrontPort = 10; //PWM on victors, can id on Falcons
-        public static final int kLeftMotorRearPort = 11; //PWM on victors, can id on Falcons
-        public static final int kRightMotorFrontPort = 12; //PWM on victors, can id on Falcons
-        public static final int kRightMotorRearPort = 13; //PWM on victors, can id on Falcons
+        public static final int kLeftMotorFrontPort = 0; //PWM on victors, can id on Falcons
+        public static final int kLeftMotorRearPort = 2; //PWM on victors, can id on Falcons
+        public static final int kRightMotorFrontPort = 1; //PWM on victors, can id on Falcons
+        public static final int kRightMotorRearPort = 3; //PWM on victors, can id on Falcons
         //Wheel encoders
         public static final int kLeftEncoderPort1 = 0;
         public static final int kLeftEncoderPort2 = 1;
