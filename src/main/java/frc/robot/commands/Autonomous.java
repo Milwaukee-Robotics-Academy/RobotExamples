@@ -14,9 +14,15 @@ import frc.robot.subsystems.Drive;
  * The main autonomous command to pickup and deliver the soda to the box.
  */
 public class Autonomous extends SequentialCommandGroup {
-    /**
-     * Create a new autonomous command.
-     */
-    public Autonomous(Drive drive) {
+    private Drive m_Drive;
+
+  /**
+   * Create a new autonomous command.
+   */
+  public Autonomous(Drive drive) {
+    m_Drive = drive;
+    addCommands(
+        new DriveForward(m_Drive, .5).withTimeout(3)
+       );
   }
 }

@@ -8,13 +8,19 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.subsystems.Drive;
 
-public class TestForDistance extends CommandBase { 
+public class DriveForward extends CommandBase { 
+  private final Drive m_drive;
+  private double speed = 0;
   /**
-   * Creates a new TestForDistance.
+   * Creates a new DriveForward.
    */
-  public TestForDistance() {
+  public DriveForward(Drive drive, double spd) {
+    m_drive = drive;
+    speed = spd;
     // Use addRequirements() here to declare subsystem dependencies.
+    addRequirements(m_drive);
   }
 
   // Called when the command is initially scheduled.
@@ -25,11 +31,13 @@ public class TestForDistance extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    m_drive.driveTank(speed,speed);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    m_drive.stopDrive();
   }
 
   // Returns true when the command should end.
