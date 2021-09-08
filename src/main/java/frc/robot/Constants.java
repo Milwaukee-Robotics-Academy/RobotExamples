@@ -23,7 +23,7 @@ public final class Constants {
         public static final int kRightEncoderPort1 = 2;
         public static final int kRightEncoderPort2 = 3;
 
-        public static final int kGyroPort = 1; //Analog in
+        public static final int kGyroPort = 0; //Analog in
 
         public static final boolean kIsStudentDriver = true;
     }
