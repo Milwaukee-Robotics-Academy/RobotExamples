@@ -42,10 +42,8 @@ public class Drive extends SubsystemBase implements Loggable {
    * Creates a new drive.
    */
   public Drive() {
-    m_LeftMotors.setInverted(true);
-    m_RightMotors.setInverted(false);
+    m_RightMotors.setInverted(true);
     m_robotDrive.setRightSideInverted(false);
-
   }
 
   /**
