@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.interfaces.Gyro;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.DriveConstants;
 import io.github.oblarg.oblog.Loggable;
@@ -55,7 +56,7 @@ public class Drive extends SubsystemBase implements Loggable {
    * @param rotation
    */
   public void drive(double throttle, double rotation) {
-    m_robotDrive.curvatureDrive(this.deadband(throttle), this.deadband(-rotation), true);
+    m_robotDrive.curvatureDrive(this.deadband(throttle*.9), this.deadband(rotation), true);
   }
 
   /**
@@ -72,11 +73,11 @@ public class Drive extends SubsystemBase implements Loggable {
   public double deadband(double value) {
     // Upper Deadband//
     if (value >= +0.2)
-      return ((DriveConstants.kIsStudentDriver) ? value / 2 : value);
+      return (SmartDashboard.getBoolean("Student Driver",true) ? value * .42 : value);
 
     // Lower Deadband//
     if (value <= -0.2)
-      return ((DriveConstants.kIsStudentDriver) ? value / 2 : value);
+      return (SmartDashboard.getBoolean("Student Driver",true) ? value *.42 : value);
 
     // Deadband//
     return 0;
@@ -92,12 +93,8 @@ public class Drive extends SubsystemBase implements Loggable {
    * @param leftThrottle
    * @param rotation
    */
-  public void drive(double rightThrottle, double leftThrottle, double rotation) {
+  public void drive(double leftThrottle, double rightThrottle, double rotation) {
     drive(rightThrottle - leftThrottle, rotation);
-  }
-
-  public void driveTank(double d, double e) {
-    m_robotDrive.tankDrive(deadband(d), deadband(e));
   }
 
   public void vision() {

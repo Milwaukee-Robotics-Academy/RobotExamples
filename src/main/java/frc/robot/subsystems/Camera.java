@@ -35,7 +35,7 @@ public class Camera extends SubsystemBase implements Loggable {
    */
   public Camera() {
     // Change this to match the name of your camera
-    m_Camera = new PhotonCamera("photonvision");
+    m_Camera = new PhotonCamera("Photonvision");
   }
 
   public double getTargetRange(){
@@ -51,7 +51,7 @@ public class Camera extends SubsystemBase implements Loggable {
   }
   @Log.BooleanBox
   public boolean hasTargets(){
-    return m_Camera.hasTargets();
+    return m_Camera.getLatestResult().hasTargets();
   }
 
   public void setDriverMode(boolean mode){
@@ -64,6 +64,14 @@ public class Camera extends SubsystemBase implements Loggable {
 
 public double getGoalRange(){
   return m_GoalRangeMeters;
+}
+
+@Log
+public double getTargetYaw(){
+  if(m_Camera.getLatestResult().hasTargets()){
+    return m_Camera.getLatestResult().getBestTarget().getYaw();
+  } else return 99999;
+
 }
   @Override
   public void periodic() {
