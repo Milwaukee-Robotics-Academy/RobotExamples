@@ -5,9 +5,9 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import frc.robot.commands.AlignToGoal;
 import frc.robot.commands.Autonomous;
 import frc.robot.commands.SplitArcadeDrive;
+import frc.robot.commands.TurnToTarget;
 import frc.robot.subsystems.Camera;
 import frc.robot.subsystems.Drive;
 
@@ -43,7 +43,7 @@ public void configureButtonBindings() {
  * determined by how far away we want to be, set in Constants... kGoalRangeInches )
  */
   final JoystickButton driverA = new JoystickButton(driverController, XboxController.Button.kA.value);
-  driverA.whenHeld(new AlignToGoal(m_Camera,m_Drive),true);
+  driverA.whenHeld(new TurnToTarget(m_Drive, m_Camera), true);
 
 }
 
