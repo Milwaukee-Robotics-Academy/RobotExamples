@@ -10,15 +10,21 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Drive;
 
-public class TurnLeft extends CommandBase { 
+public class Turn extends CommandBase { 
   private final Drive m_drive;
-  private double speed = 0;
+  private double m_Speed = 0;
+  private double m_DegreesTurn = 0;
+  private double m_error;  
+
+
   /**
    * Creates a new Turn.
    */
-  public TurnLeft(Drive drive, double spd) {
+  public Turn(double degrees, double spd, Drive drive) {
     m_drive = drive;
-    speed = spd;
+    m_DegreesTurn = degrees;
+    m_Speed = spd;
+    m_drive.resetGyro();
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(m_drive);
   }
@@ -26,13 +32,24 @@ public class TurnLeft extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    m_drive.resetGyro();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_drive.driveTank(-speed,speed);
-  }
+    if (m_DegreesTurn > 0){
+      m_error = m_DegreesTurn - m_drive.getAngle();
+      if ( m_error >= 0) {
+        m_drive.drive(0, m_Speed);
+      } 
+    }else {
+        m_error = m_DegreesTurn - m_drive.getAngle();
+        if ( m_error <= 0) {
+          m_drive.drive(0, -m_Speed);
+      }
+    }  
+}
 
   // Called once the command ends or is interrupted.
   @Override

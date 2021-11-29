@@ -10,6 +10,7 @@ import frc.robot.commands.AlignToGoal;
 import frc.robot.commands.Autonomous;
 import frc.robot.commands.DriveForward;
 import frc.robot.commands.SplitArcadeDrive;
+import frc.robot.commands.Turn;
 import frc.robot.subsystems.Camera;
 import frc.robot.subsystems.Drive;
 
@@ -17,10 +18,17 @@ public class RobotContainer {
   private final Drive m_Drive = new Drive();
   private final Camera m_Camera = new Camera();
   private final XboxController driverController = new XboxController(0);
-  private final CommandBase m_autonomousCommand = new SequentialCommandGroup(new DriveForward(300, .5, m_Drive).withTimeout(3),
-  new DriveForward(300, .5, m_Drive).withTimeout(3)
+  private final CommandBase m_autonomousCommand = new SequentialCommandGroup(
+    new DriveForward(750, .7, m_Drive).withTimeout(10),
+    new Turn(-90, .5, m_Drive).withTimeout(10)
   );
 
+  /**
+   * private final CommandBase m_autonomousCommand = new SequentialCommandGroup(new DriveForward(300, .5, m_Drive).withTimeout(3),
+  new Turn(90, .5, m_Drive).withTimeout(3)
+  );
+
+   */
 public RobotContainer() {
 
   

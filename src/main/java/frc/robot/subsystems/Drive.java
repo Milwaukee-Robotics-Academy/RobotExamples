@@ -33,7 +33,7 @@ public class Drive extends SubsystemBase implements Loggable {
   
 
   @Log.Gyro
-  private final Gyro gyro = new AnalogGyro(DriveConstants.kGyroPort);
+  private final Gyro m_Gyro = new AnalogGyro(DriveConstants.kGyroPort);
   // private final AHRS m_gyroscope = new AHRS(SPI.Port.kMXP);
 
   @Log.DifferentialDrive
@@ -113,9 +113,15 @@ public class Drive extends SubsystemBase implements Loggable {
     return (m_LeftEncoder.getDistance()+m_RightEncoder.getDistance())/2;
   }
 
+  public Double getAngle() {
+    return m_Gyro.getAngle();
+  }
   public void resetEncoders() {
     m_LeftEncoder.reset();
     m_RightEncoder.reset();
+  }
+  public void resetGyro() {
+    m_Gyro.reset();
   }
   public void stopDrive() {
     m_robotDrive.stopMotor();

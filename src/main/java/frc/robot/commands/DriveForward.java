@@ -41,7 +41,6 @@ public class DriveForward extends CommandBase {
   @Override
   public void execute() {
     m_error = m_distance - m_drive.getDistanceAverage();
-    System.out.println (m_error);
     if ( m_error >= 0) {
      m_drive.driveTank(1,1);
     } 
