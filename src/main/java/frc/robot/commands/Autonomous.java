@@ -22,7 +22,8 @@ public class Autonomous extends SequentialCommandGroup {
   public Autonomous(Drive drive) {
     m_Drive = drive;
     addCommands(
-        new DriveForward(m_Drive, .5).withTimeout(3)
+        new DriveForward(10, .5, m_Drive).withTimeout(3),
+        new DriveForward(10, .5, m_Drive).withTimeout(3)
        );
   }
 }

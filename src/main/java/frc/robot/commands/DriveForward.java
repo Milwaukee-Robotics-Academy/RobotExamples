@@ -10,39 +10,50 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Drive;
 
+/**
+ * This command drives the robot over a given distance with simple proportional control This command
+ * will drive a given distance limiting to a maximum speed.
+ */
 public class DriveForward extends CommandBase { 
+ 
   private final Drive m_drive;
-  private double speed = 0;
-  /**
-   * Creates a new DriveForward.
-   */
-  public DriveForward(Drive drive, double spd) {
+  private final double m_driveForwardSpeed;
+  private final double m_distance;
+  private double m_error;
+  private static final double kTolerance = 0.1;
+  private static final double kP = -1.0 / 5.0;
+
+
+  public DriveForward(double distance, double maxSpeed, Drive drive) {
+    m_distance = distance;
+    m_driveForwardSpeed = maxSpeed;
     m_drive = drive;
-    speed = spd;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(m_drive);
   }
 
-  // Called when the command is initially scheduled.
+
   @Override
   public void initialize() {
+    m_drive.resetEncoders();
   }
 
-  // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_drive.driveTank(speed,speed);
+    m_error = m_distance - m_drive.getDistanceAverage();
+    System.out.println (m_error);
+    if ( m_error >= 0) {
+     m_drive.driveTank(1,1);
+    } 
   }
 
-  // Called once the command ends or is interrupted.
+  @Override
+  public boolean isFinished() {
+    return m_error <= 0;
+  }
+
   @Override
   public void end(boolean interrupted) {
     m_drive.stopDrive();
-  }
-
-  // Returns true when the command should end.
-  @Override
-  public boolean isFinished() {
-    return false;
   }
 }

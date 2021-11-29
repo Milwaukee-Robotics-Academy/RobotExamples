@@ -30,6 +30,7 @@ public class Drive extends SubsystemBase implements Loggable {
   @Log.Encoder
   private final Encoder m_RightEncoder = new Encoder(DriveConstants.kRightEncoderPort1,
       DriveConstants.kRightEncoderPort2);
+  
 
   @Log.Gyro
   private final Gyro gyro = new AnalogGyro(DriveConstants.kGyroPort);
@@ -45,6 +46,7 @@ public class Drive extends SubsystemBase implements Loggable {
     m_LeftMotors.setInverted(true);
     m_RightMotors.setInverted(false);
     m_robotDrive.setRightSideInverted(false);
+    m_RightEncoder.setReverseDirection(true);
 
   }
 
@@ -99,13 +101,22 @@ public class Drive extends SubsystemBase implements Loggable {
   }
 
   public void driveTank(double d, double e) {
-    m_robotDrive.tankDrive(deadband(d), deadband(e));
+    m_robotDrive.tankDrive(-deadband(d), -deadband(e));
   }
 
   public void vision() {
 
   }
 
+  @Log(name = "Distance Average")
+  public Double getDistanceAverage() {
+    return (m_LeftEncoder.getDistance()+m_RightEncoder.getDistance())/2;
+  }
+
+  public void resetEncoders() {
+    m_LeftEncoder.reset();
+    m_RightEncoder.reset();
+  }
   public void stopDrive() {
     m_robotDrive.stopMotor();
   }

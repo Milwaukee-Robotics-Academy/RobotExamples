@@ -4,9 +4,11 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.AlignToGoal;
 import frc.robot.commands.Autonomous;
+import frc.robot.commands.DriveForward;
 import frc.robot.commands.SplitArcadeDrive;
 import frc.robot.subsystems.Camera;
 import frc.robot.subsystems.Drive;
@@ -15,7 +17,9 @@ public class RobotContainer {
   private final Drive m_Drive = new Drive();
   private final Camera m_Camera = new Camera();
   private final XboxController driverController = new XboxController(0);
-  private final CommandBase m_autonomousCommand = new Autonomous(m_Drive).withTimeout(5);
+  private final CommandBase m_autonomousCommand = new SequentialCommandGroup(new DriveForward(300, .5, m_Drive).withTimeout(3),
+  new DriveForward(300, .5, m_Drive).withTimeout(3)
+  );
 
 public RobotContainer() {
 
